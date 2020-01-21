@@ -32,9 +32,9 @@ namespace CompanyXYZCodingTest
         /// </summary>
         public void TurnRight()
         {
-            if (this.Direction == "N") { this.Direction = "E";  }
-            if (this.Direction == "E") { this.Direction = "S";  }
-            if (this.Direction == "S") { this.Direction = "W";  }
+            if (this.Direction == "N") { this.Direction = "E";  return; }
+            if (this.Direction == "E") { this.Direction = "S";  return; }
+            if (this.Direction == "S") { this.Direction = "W";  return; }
             
             // Current direction is west
             this.Direction = "N";
@@ -46,9 +46,9 @@ namespace CompanyXYZCodingTest
         /// </summary>
         public void TurnLeft()
         {
-            if (this.Direction == "N") { this.Direction = "W";  }
-            if (this.Direction == "W") { this.Direction = "S";  }
-            if (this.Direction == "S") { this.Direction = "E";  }
+            if (this.Direction == "N") { this.Direction = "W";  return; }
+            if (this.Direction == "W") { this.Direction = "S";  return; }
+            if (this.Direction == "S") { this.Direction = "E";  return; }
 
             // Current direction is East
             this.Direction = "N";
@@ -61,13 +61,13 @@ namespace CompanyXYZCodingTest
         /// <param name="eastBoundary"></param>
         public void Advance(int northBoundary, int eastBoundary)
         {
-            if (this.Direction == "N" && this.North <= northBoundary) { this.North++; }
+            if (this.Direction == "N" && this.North < northBoundary) { this.North++; }
 
-            if (this.Direction == "E" && this.East <= eastBoundary) { this.East++; }
+            if (this.Direction == "E" && this.East < eastBoundary) { this.East++; }
 
-            if (this.Direction == "S" && this.North > 1) { this.North--; }
+            if (this.Direction == "S" && this.North >= 1) { this.North--; }
 
-            if (this.Direction == "W" && this.East > 1) { this.East--; }
+            if (this.Direction == "W" && this.East >= 1) { this.East--; }
         }
     }
 
@@ -112,7 +112,7 @@ namespace CompanyXYZCodingTest
         public override string ToString()
         {
             var pos = this.CurrentPosition;
-            return $"{pos.North} {pos.East} {pos.Direction}";
+            return $"{pos.East} {pos.North} {pos.Direction}";
         }
 
         /// <summary>
@@ -120,17 +120,17 @@ namespace CompanyXYZCodingTest
         /// </summary>
         /// <param name="rover">Current rover</param>
         /// <param name="instructions">List of instructions</param>
-        public static Rover ProcessInstructions (Rover rover, Grid grid, List<string> instructions)
+        public static Rover ProcessInstructions (Rover rover, Grid grid, List<char> instructions)
         {
             var currentPosition = rover.CurrentPosition;
 
             foreach (var instruction in instructions)
             {
-                if (instruction == "L") { currentPosition.TurnLeft(); }
+                if (instruction == 'L') { currentPosition.TurnLeft(); }
                 
-                if (instruction == "R") { currentPosition.TurnRight(); }
+                if (instruction == 'R') { currentPosition.TurnRight(); }
 
-                if (instruction == "M") { currentPosition.Advance(grid.EastBoundary, grid.NorthBoundary); }
+                if (instruction == 'M') { currentPosition.Advance(grid.EastBoundary, grid.NorthBoundary); }
             }
 
             rover.CurrentPosition = currentPosition;
@@ -174,7 +174,7 @@ namespace CompanyXYZCodingTest
                     var roverLine = Console.ReadLine().Split(" ");
                     var rover = processor.CaptureRover(roverLine[0], roverLine[1], roverLine[2]);
 
-                    var instructions = Console.ReadLine().Split(" ").ToList();
+                    var instructions = Console.ReadLine().ToCharArray().ToList();
 
                     var updatedRover = Rover.ProcessInstructions(rover, grid, instructions);
 
