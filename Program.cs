@@ -155,7 +155,7 @@ namespace CompanyXYZCodingTest
 
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var processor = new InputProcessor();
 
@@ -182,6 +182,8 @@ namespace CompanyXYZCodingTest
                     rovers.Add(updatedRover);
                 }
 
+
+                // Print each captured rover
                 foreach(var rover in rovers)
                 {
                     Console.WriteLine(rover);
