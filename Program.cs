@@ -109,12 +109,18 @@ namespace CompanyXYZCodingTest
             this.CurrentPosition = position;
         }
 
+        public override string ToString()
+        {
+            var pos = this.CurrentPosition;
+            return $"{pos.North} {pos.East} {pos.Direction}";
+        }
+
         /// <summary>
         ///     Process the instructions for the 
         /// </summary>
         /// <param name="rover">Current rover</param>
         /// <param name="instructions">List of instructions</param>
-        public static void ProcessInstructions (Rover rover, Grid grid, List<string> instructions)
+        public static Rover ProcessInstructions (Rover rover, Grid grid, List<string> instructions)
         {
             var currentPosition = rover.CurrentPosition;
 
@@ -128,24 +134,22 @@ namespace CompanyXYZCodingTest
             }
 
             rover.CurrentPosition = currentPosition;
+
+            return rover;
         }
     }
 
     public class InputProcessor
     {
-        public static Grid SetupGrid(int inputOne, int inputTwo)
+        public  Grid SetupGrid(string inputOne, string inputTwo)
         {
-            return new Grid(inputOne, inputTwo);
+            return new Grid(int.Parse(inputOne), int.Parse(inputTwo));
         }
 
-        public static Rover CaptureRover(int inputOne, int inputTwo, string inputThree)
+        public  Rover CaptureRover(string inputOne, string inputTwo, string inputThree)
         {
-            return  new Rover(new Position(inputOne, inputTwo, inputThree));
-        }
-
-        public static List<string> CaptureInstructions(string[] instructions)
-        {
-            return instructions.ToList();
+            var position = new Position(int.Parse(inputOne), int.Parse(inputTwo), inputThree);
+            return new Rover(position);
         }
     }
 
@@ -153,9 +157,36 @@ namespace CompanyXYZCodingTest
     {
         static void Main(string[] args)
         {
-            while (Console.In.Peek() != -1)
+            var processor = new InputProcessor();
+
+            // Take first line to setup grid
+            var firstLine = Console.ReadLine().Split(" ");
+
+            if (firstLine[0] == "\n" || firstLine.Length != 0)
             {
-                Console.WriteLine(Console.ReadLine());
+                var grid = processor.SetupGrid(firstLine[0], firstLine[1]);
+
+                var rovers = new List<Rover>();
+
+                while (Console.In.Peek() != -1)
+                {
+                    // Capture current rover and position
+                    var roverLine = Console.ReadLine().Split(" ");
+                    var rover = processor.CaptureRover(roverLine[0], roverLine[1], roverLine[2]);
+
+                    var instructions = Console.ReadLine().Split(" ").ToList();
+
+                    var updatedRover = Rover.ProcessInstructions(rover, grid, instructions);
+
+                    // Add updated rover to the list
+                    rovers.Add(updatedRover);
+                }
+
+                foreach(var rover in rovers)
+                {
+                    Console.WriteLine(rover);
+                }
+
             }
         }
     }
