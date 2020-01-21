@@ -98,24 +98,15 @@ namespace CompanyXYZCodingTest
     {
         public Position CurrentPosition;
 
-        public int EastBoundary;
-        public int NorthBoundary;
-
         /// <summary>
         ///     Designated constructor
         /// </summary>
         /// <param name="position">Initial starting position for rover</param>
         /// <param name="grid">Grid containing world boundaries</param>
-        public Rover(Position position, Grid grid)
+        public Rover(Position position)
         {
-            this.CurrentPosition.North = position.North;
-            this.CurrentPosition.East = position.East;
-            this.CurrentPosition.Direction = position.Direction;
-
-            this.EastBoundary = grid.EastBoundary;
-            this.NorthBoundary = grid.NorthBoundary;
+            this.CurrentPosition = position;
         }
-
 
         /// <summary>
         ///     Process the instructions for the 
