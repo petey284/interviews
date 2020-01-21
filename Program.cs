@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CompanyXYZCodingTest
 {
@@ -129,12 +130,33 @@ namespace CompanyXYZCodingTest
             rover.CurrentPosition = currentPosition;
         }
     }
-   
+
+    public class InputProcessor
+    {
+        public static Grid SetupGrid(int inputOne, int inputTwo)
+        {
+            return new Grid(inputOne, inputTwo);
+        }
+
+        public static Rover CaptureRover(int inputOne, int inputTwo, string inputThree)
+        {
+            return  new Rover(new Position(inputOne, inputTwo, inputThree));
+        }
+
+        public static List<string> CaptureInstructions(string[] instructions)
+        {
+            return instructions.ToList();
+        }
+    }
 
     class Program
     {
         static void Main(string[] args)
         {
+            while (Console.In.Peek() != -1)
+            {
+                Console.WriteLine(Console.ReadLine());
+            }
         }
     }
 }
